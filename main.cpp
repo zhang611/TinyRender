@@ -91,11 +91,7 @@ void renderModel() {
     }
 
     image.write_tga_file("../image/output.tga");
-    cv::imwrite("../image/output.png", img);
-
-
-
-
+    cv::imwrite("../image/render_obj.png", img);
 
     delete model;
     delete[] zBuffer;
@@ -117,12 +113,38 @@ void drawLine() {
         img.data = image.buffer();
         cv::imshow(mTitle, img);
     }
+    cv::imwrite("../image/line.png", img);
 }
 
 
+void drawTriangle() {
+    TGAImage image(width, height, TGAImage::RGB);
+    std::string mTitle = "image";
+    cv::namedWindow(mTitle, cv::WINDOW_AUTOSIZE);
+    cv::Mat img(height, width, CV_8UC3);
+    int key = -1;
+    while (key != 27) {
+        key = cv::waitKey(10);
+        image.clear();
+
+        Vec3f oneTriangle[3];
+        oneTriangle[0] = {100, 100, 0};
+        oneTriangle[1] = {100, 500, 0};
+        oneTriangle[2] = {500, 500, 0};
+
+        simpleTriangle(image, oneTriangle);
+        img.data = image.buffer();
+        cv::imshow(mTitle, img);
+    }
+    cv::imwrite("../image/oneTriangle.png", img);
+}
+
+
+
 int main(int argc, char **argv) {
-    renderModel();
+//    renderModel();
 
 //    drawLine();
+    drawTriangle();
     return 0;
 }

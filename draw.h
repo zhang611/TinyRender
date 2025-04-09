@@ -58,6 +58,33 @@ void line(TGAImage &image, int x0, int y0, int x1, int y1, TGAColor color) {
 }
 
 
+void simpleTriangle(TGAImage &image, Vec3f *v) {
+    int width = image.get_width(), height = image.get_height();
+    int minX = (int)std::floor(min(v[0].x, v[1].x, v[2].x));
+    minX = std::max(minX, 0);
+    int maxX = (int)std::ceil(max(v[0].x, v[1].x, v[2].x));
+    maxX = std::min(maxX, width);
+    int minY = (int)std::floor(min(v[0].y, v[1].y, v[2].y));
+    minY = std::max(minY, 0);
+    int maxY = (int)std::ceil(max(v[0].y, v[1].y, v[2].y));
+    maxY = std::min(maxY, height);
+
+    Vec3f p;
+    for (int y = minY; y < maxY; y++) {
+        for (int x = minX; x < maxX; x++) {
+            p.x = (float)x + 0.5f;
+            p.y = (float)y + 0.5f;
+            p.z = 0.f;
+            Vec3f bc_screen = barycentric(v, p);  // 重心坐标
+            if (bc_screen.x < 0 || bc_screen.y < 0 || bc_screen.z < 0) continue;  // 像素超出三角形范围
+            image.set(x, y,TGAColor(0, 255, 255, 255));
+        }
+    }
+}
+
+
+
+
 
 void triangle(TGAImage &image, Model *model, float *zbuffer, Vec3f *v,
               Vec2f *tri_uv, float intensity) {

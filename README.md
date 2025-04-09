@@ -10,10 +10,12 @@
 ## 光栅化
 
 ### 直线
-
+基于布雷森汉姆
+![](image/line.png)
 ### 三角形
-
+![](image/oneTriangle.png)
 ### obj
+![](image/render_obj.png)
 
 
 ## 着色模型
